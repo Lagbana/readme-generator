@@ -14,7 +14,7 @@ function license (type) {
     const arrKeys = (Object.keys(links))
     for (key of arrKeys) {
         if (key === type) {
-            return links.key
+            return links[key]
         }
     }
 
