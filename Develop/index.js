@@ -17,7 +17,7 @@ const questions = [
     },
     {
         type: 'input',
-        name: 'contributors',
+        name: 'contributing',
         message: 'Who are the contributors?'
     }
 
@@ -28,14 +28,14 @@ const questionFunc = async () => {
     return response = await inquirer.prompt(questions)    
 }
 
-// Execute Github Call
+// Execute Github API get call
 const githubResult = async (name) => {
     return result = await api.getUser(name) 
 }
 
 
 
-// Write file
+// Write markdown file
 const writeToFile = async (fileName, data) => {
 
     let filehandle
@@ -49,13 +49,27 @@ const writeToFile = async (fileName, data) => {
         if (filehandle !== undefined) await filehandle.close()
     }
 }
+const repos = (url) => {
+
+    const config = {
+      method: 'get',
+      headers: {
+        Accept: 'application/json'
+      }
+    }
+
+   const result = axios.get(url, config)
+   console.log(result)
+}
 
 const init = async () => {
 await questionFunc()
 const {username, title, contributors } = response
 
 await githubResult(username)
-const {name, avatar_url, html_url } = result.data
+const {name, avatar_url, html_url, repos_url } = result.data
+
+await repos(repos_url)
 
 // generateMarkdown(data)
 // writeToFile('test.md', readmeContent)
