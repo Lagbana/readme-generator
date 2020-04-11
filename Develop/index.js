@@ -1,5 +1,6 @@
 const fs = require('fs').promises
 const inquirer = require('inquirer')
+const api = require('./utils/api.js')
 
 
 
@@ -21,11 +22,20 @@ const questions = [
     }
 
 ]
+
+// Questionaire function using inquirer
 const questionFunc = async () => {
     return response = await inquirer.prompt(questions)    
 }
 
+// Execute Github Call
+const githubResult = async (name) => {
+    return result = await api.getUser(name) 
+}
 
+
+
+// Write file
 const writeToFile = async (fileName, data) => {
 
     let filehandle
@@ -41,27 +51,15 @@ const writeToFile = async (fileName, data) => {
 }
 
 const init = async () => {
-// questionFunc()
-// const {username, title, contributors } = response
-// api.getUser(username)
-// const {github responses} = apiResponse
+await questionFunc()
+const {username, title, contributors } = response
+
+await githubResult(username)
+const {name, avatar_url, html_url } = result.data
+
 // generateMarkdown(data)
 // writeToFile('test.md', readmeContent)
 }
 
-// init()
+init()
 
-
-
-
-
-
-
-/*
-response keys:
-data
-- avatar_url
-- html_url
-- name
-
-*/
