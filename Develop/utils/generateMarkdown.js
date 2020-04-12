@@ -21,7 +21,7 @@ const generateMarkdown = (data, gitData) => {
 
   // README Installation steps bullet points creation
   const install = data.installation
-  let arr = install.split(', ')
+  let arr = install.split('& ')
 
   let insert =
     `  
