@@ -32,7 +32,7 @@ const questions = [
     {
         type: 'input',
         name: 'installation',
-        message: 'Installation steps. End each step with comma and space (, ). Example: "Step 1% Step 2% Step 3%" (do not use commas elsewhere)',
+        message: 'Installation steps. End each step with comma and space (, ). Example: "Step 1, Step 2, Step 3" (do not use commas elsewhere)',
         default: 'Installation process...'
     },
     {
@@ -110,7 +110,7 @@ const init = async () => {
 
         const markdown = generateMarkdown(await response, await result.data)
 
-        writeToFile('autogen_README.md', markdown)
+        writeToFile('autoGen_README.md', markdown)
     } catch (err) {
         console.log(err)
     }
