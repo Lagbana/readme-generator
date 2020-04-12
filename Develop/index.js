@@ -109,7 +109,8 @@ const init = async () => {
         await githubResult(username)
 
         const markdown = generateMarkdown(await response, await result.data)
-        writeToFile('autogen-README.md', markdown)
+
+        writeToFile('autogen_README.md', markdown)
     } catch (err) {
         console.log(err)
     }
