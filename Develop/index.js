@@ -1,11 +1,11 @@
+// Dependencies
 const fs = require('fs').promises
 const inquirer = require('inquirer')
 const api = require('./utils/api.js')
 const generateMarkdown = require('./utils/generateMarkdown.js')
 
 
-
-
+// Inquirer questions
 const questions = [
     {
         type: 'input',
@@ -65,14 +65,13 @@ const questions = [
         message: 'Choose a license for your project: ',
         choices: ["MIT", "Apache", "The_Unlicense", "Mozilla_PL_2", "GNU_3"]
     }
-
 ]
 
 // Questionaire function using inquirer
 const questionFunc = async () => {
-    try{
+    try {
         return response = await inquirer.prompt(questions)
-    } catch(err){
+    } catch (err) {
         console.log(err)
     }
 
@@ -80,18 +79,15 @@ const questionFunc = async () => {
 
 // Execute Github API get call
 const githubResult = async (name) => {
-    try{
+    try {
         return result = await api.getUser(name)
-    } catch(err){
+    } catch (err) {
         console.log(err)
     }
 }
 
-
-
 // Write markdown file
 const writeToFile = async (fileName, data) => {
-
     let filehandle
     try {
         filehandle = await fs.open(fileName, 'w')
@@ -106,15 +102,14 @@ const writeToFile = async (fileName, data) => {
 
 // Execute ReadMe Creation
 const init = async () => {
-    try {        
+    try {
         await questionFunc()
-        const {username} = response
-    
+        const { username } = response
+
         await githubResult(username)
-        // const { name, avatar_url, repos_url } = result.data
-    
+
         const markdown = generateMarkdown(await response, await result.data)
-        writeToFile('autoREADME.md', markdown)
+        writeToFile('autogen-README.md', markdown)
     } catch (err) {
         console.log(err)
     }
