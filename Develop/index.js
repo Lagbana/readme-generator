@@ -1,6 +1,8 @@
 const fs = require('fs').promises
 const inquirer = require('inquirer')
 const api = require('./utils/api.js')
+const generateMarkdown = require('./utils/generateMarkdown.js')
+
 
 
 
@@ -8,29 +10,81 @@ const questions = [
     {
         type: 'input',
         name: 'username',
-        message: 'What is your gitHUb username?'
+        message: 'What is your gitHub username?'
+    },
+    {
+        type: 'input',
+        name: 'reponame',
+        message: 'What is your project reposiotry name (please be exact)?'
     },
     {
         type: 'input',
         name: 'title',
-        message: 'What is your project title?'
+        message: 'What is your project title?',
+        default: 'Project'
+    },
+    {
+        type: 'input',
+        name: 'description',
+        message: 'Provide a short description of the application.',
+        default: 'Project description...'
+    },
+    {
+        type: 'input',
+        name: 'installation',
+        message: 'Installation steps. End each step with comma and space (, ). Example: "Step 1, Step 2, Step 3" ',
+        default: 'Installation process...'
+    },
+    {
+        type: 'input',
+        name: 'usage',
+        message: 'Provide instructions and examples for use. ',
+        default: 'Examples coming soon...'
     },
     {
         type: 'input',
         name: 'contributing',
-        message: 'Who are the contributors?'
+        message: 'What are your contributing guidlines?',
+        default: 'Contributor guidelines and covenant...'
+    },
+    {
+        type: 'input',
+        name: 'test',
+        message: 'What are your application tests and examples',
+        default: 'Application tests and examples...'
+    },
+    {
+        type: 'input',
+        name: 'questions',
+        message: 'Provide an email if you want users to send questions about the app',
+        default: 'Hidden'
+    },
+    {
+        type: 'list',
+        name: 'license',
+        message: 'Choose a license for your project: ',
+        choices: ["MIT", "Apache", "The_Unlicense", "Mozilla_PL_2", "GNU_3"]
     }
 
 ]
 
 // Questionaire function using inquirer
 const questionFunc = async () => {
-    return response = await inquirer.prompt(questions)    
+    try{
+        return response = await inquirer.prompt(questions)
+    } catch(err){
+        console.log(err)
+    }
+
 }
 
 // Execute Github API get call
 const githubResult = async (name) => {
-    return result = await api.getUser(name) 
+    try{
+        return result = await api.getUser(name)
+    } catch(err){
+        console.log(err)
+    }
 }
 
 
@@ -49,31 +103,21 @@ const writeToFile = async (fileName, data) => {
         if (filehandle !== undefined) await filehandle.close()
     }
 }
-const repos = (url) => {
 
-    const config = {
-      method: 'get',
-      headers: {
-        Accept: 'application/json'
-      }
-    }
-
-   const result = axios.get(url, config)
-   console.log(result)
-}
-
+// Execute ReadMe Creation
 const init = async () => {
-await questionFunc()
-const {username, title, contributors } = response
-
-await githubResult(username)
-const {name, avatar_url, html_url, repos_url } = result.data
-
-await repos(repos_url)
-
-// generateMarkdown(data)
-// writeToFile('test.md', readmeContent)
+    try {        
+        await questionFunc()
+        const {username} = response
+    
+        await githubResult(username)
+        // const { name, avatar_url, repos_url } = result.data
+    
+        const markdown = generateMarkdown(await response, await result.data)
+        writeToFile('autoREADME.md', markdown)
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 init()
-
