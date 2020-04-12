@@ -32,7 +32,7 @@ const questions = [
     {
         type: 'input',
         name: 'installation',
-        message: 'Installation steps. End each step with comma and space (, ). Example: "Step 1, Step 2, Step 3" ',
+        message: 'Installation steps. End each step with comma and space (& ). Example: "Step 1& Step 2& Step 3" ',
         default: 'Installation process...'
     },
     {
