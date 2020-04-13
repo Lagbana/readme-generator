@@ -1,3 +1,4 @@
+'use strict;'
 // Dependencies
 const fs = require('fs').promises
 const inquirer = require('inquirer')
@@ -80,7 +81,9 @@ const questionFunc = async () => {
 // Execute Github API get call
 const githubResult = async (name) => {
     try {
-        return result = await api.getUser(name)
+        const result = await api.getUser(name)
+        return result.data
+        
     } catch (err) {
         console.log(err)
     }
@@ -103,12 +106,12 @@ const writeToFile = async (fileName, data) => {
 // Execute ReadMe Creation
 const init = async () => {
     try {
-        await questionFunc()
+        const response = await questionFunc()
         const { username } = response
 
-        await githubResult(username)
+        const result = await githubResult(username)
 
-        const markdown = generateMarkdown(await response, await result.data)
+        const markdown = generateMarkdown(response, result)
 
         writeToFile('autoGen_README.md', markdown)
     } catch (err) {
