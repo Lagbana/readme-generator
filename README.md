@@ -14,7 +14,7 @@ README Generator is a command-line application that dynamically generates a READ
 * [License](#license)
 
 ## Installation
-  
+ - Change into develop directory: `cd develop` 
  - Once the repository is cloned run `npm install` to install the dependencies 
  - The application will be invoked by running the following command in the terminal: `node index.js` 
 
